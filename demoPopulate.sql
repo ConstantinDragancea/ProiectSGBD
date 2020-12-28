@@ -74,3 +74,5 @@ insert into PlasareComanda values(4, 4, 2);
 insert into PlasareComanda values(4, 3, 7);
 insert into PlasareComanda values(5, 3, 3);
 insert into PlasareComanda values(5, 1, 2);
+
+commit;
