@@ -2,7 +2,7 @@
 
 -- Magazinul isi face totalurile in activitatilor economice la sfarsitul fiecarui
 -- trimestru. In momentul in care face aceste totaluri, vrem sa ne asiguram ca
--- datele sunt cat mai exacte, astfel nu vrem ca o cumparatura facuta sa apara intr-un
+-- datele sunt consistente, astfel nu vrem ca o cumparatura facuta sa apara intr-un
 -- calcul, iar in altul nu (daca de exemplu intre completarea fisierelor/tabelelor
 -- 1 si 2 se mai face o comanda).
 -- Solutia este ca in momentul in care se efectueaza aceste totaluri, sa fie blocata

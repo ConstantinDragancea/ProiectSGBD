@@ -3,7 +3,7 @@
 -- Vrem sa mentinem in tabelul de categorii niste contoare a pretului minim
 -- respectiv maxim a unui produs din acea categorie.
 -- Astfel, trebuie sa avem grija sa modificam aceste campuri cand se adauga
--- un produs nou, sterge sau modifica unul existent, intrucat nu trebuie sa fie
+-- un produs nou, sau modifica unul existent, intrucat nu trebuie sa fie
 -- grija unui utilizator simplu a bazei de date.
 
 -- Il facem trigger de tip after ca sa se faca automat check-urile constrangerii

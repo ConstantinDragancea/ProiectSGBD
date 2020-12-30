@@ -4,7 +4,7 @@
 -- care e depozitul care detine cea mai mare cantitate de produse din acea
 -- categorie.
 
--- Avem nevoie de tabelele Categoie, Produs, si DisponibilitateDepozit
+-- Avem nevoie de tabelele Categorie, Produs, si DisponibilitateDepozit
 
 set serveroutput on;
 

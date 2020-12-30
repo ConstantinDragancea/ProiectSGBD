@@ -1,6 +1,6 @@
 -- Cerinta nr 9
 
--- Magazinul are nevoie de o procedura valoarea comenzilor plasata de userii
+-- Magazinul are nevoie de o procedura care sa afle valoarea comenzilor plasata de userii
 -- dintr-un anumit oras, in primele k luni de la crearea contului
 
 -- Avem nevoie de tabelele Locatie, Utilizator, Comanda, Produs si PlasareComanda
