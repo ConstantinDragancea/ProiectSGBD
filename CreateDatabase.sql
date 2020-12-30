@@ -9,18 +9,24 @@ drop table Comanda cascade constraints;
 drop table PlasareComanda cascade constraints;
 drop table Curier cascade constraints;
 
+drop trigger audit_schema;
+drop trigger logoff_write_logs;
+drop table audit_user;
+drop trigger shutdown_write_logs;
+drop trigger log_erori;
+
 create table Locatie(
 	locatie_id number primary key,
 	adresa     varchar2(100),
-	oras       varchar2(50),
-	tara	   varchar2(30)
+	oras       varchar2(100),
+	tara	   varchar2(100)
 );
 
 create table Utilizator(
 	utilizator_id		number primary key,
-	nume				varchar2(20),
+	nume				varchar2(20) not null,
 	prenume				varchar2(20),
-	tip 				varchar2(20),
+	tip 				varchar2(20) not null,
 	email				varchar2(60),
 	telefon				varchar2(10),
 	DataInregistrare	date,
@@ -40,7 +46,7 @@ create table Produs(
 	vanzator_id		number not null,
 	categorie_id	number not null,
 	titlu			varchar2(200),
-	descriere		varchar2(500),
+	descriere		varchar2(3000),
 	pret			number(10, 2),
 	rating			number(2, 1),
 	foreign key (vanzator_id) references Utilizator(utilizator_id) on delete cascade,
@@ -52,7 +58,7 @@ create table Recenzie(
 	utilizator_id	number not null,
 	produs_id		number not null,
 	stele			number(2, 1),
-	continut		varchar2(300),
+	continut		varchar2(3000),
 	data			date,
 	foreign key (utilizator_id) references Utilizator(utilizator_id) on delete cascade,
 	foreign key (produs_id) references Produs(produs_id) on delete cascade

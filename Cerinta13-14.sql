@@ -124,7 +124,7 @@ is
         end loop;
         
         for i in Depozite.first .. Depozite.last loop
-            if Depozite(i) is not null then
+            if Depozite.exists(i) then
                 dbms_output.put_line('Produs id: '||i||' Depozit id: '||Depozite(i));
             end if;
         end loop;

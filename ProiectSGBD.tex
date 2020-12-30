@@ -15,12 +15,11 @@ Gestiunea unui magazin online}
 \usepackage{amsmath,amsfonts,amssymb,mathtools}
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage{algorithmic}
-\usepackage[dvipdfm]{graphicx}
-\graphicspath{ {./} }
-% \usepackage{xcolor, listings}
-% \usepackage{textcomp}
-\usepackage{listings}
 \usepackage{xcolor}
+\usepackage{listings}
+\usepackage[dvipdfm]{graphicx}
+    \graphicspath{ {./} }
+
 \lstset{upquote=true}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -111,8 +110,8 @@ creăm tabelele care nu dețin chei străine în componența lor. De exemplu:
 create table Locatie(
 	locatie_id number primary key,
 	adresa     varchar2(100),
-	oras       varchar2(50),
-	tara	   varchar2(30)
+	oras       varchar2(100),
+	tara	   varchar2(100)
 );
 \end{lstlisting}
 
@@ -129,9 +128,9 @@ Apoi adăugam tabele ce folosesc și chei externe, de exemplu:
 ]
 create table Utilizator(
 	utilizator_id		number primary key,
-	nume				varchar2(20),
+	nume				varchar2(20) not null,
 	prenume				varchar2(20),
-	tip 				varchar2(20),
+	tip 				varchar2(20) not null,
 	email				varchar2(60),
 	telefon				varchar2(10),
 	DataInregistrare	date,
@@ -162,6 +161,38 @@ create table PlasareComanda(
 	foreign key (comanda_id) references Comanda(comanda_id) on delete cascade
 );
 \end{lstlisting}
+
+\pagebreak
+
+\section{Popularea bazei de date}
+Pentru a demonstra funcționalitatea bazei de date, aș fi putut scrie de mână câteva insert-uri, însă,
+având ambiții de programator, am decis să găsesc o metodă mai "programatică" de a face acest lucru. Decât să 
+iau date gata făcute de pe internet și să am bătăi de cap cu legile de protecție a datelor personale, voi
+genera aceste intrări random. Uitându-mă peste diagrama conceptuală, am nevoie să generez următoarele tipuri
+de informație: nume, prenume, adresă, orașe, țări, numere de telefon, email, dăți calendaristice, nume și descrieri
+de produse, conținut de recenzii, nume de categorii. Pentru câmpurile formate din șiruri de caractere aș putea să creez efectiv
+string-uri random, însă ar fi dificil de urmărit si analizat baza de date pentru o ființă umană. Cred că se 
+poate mai bine de atât.
+
+Voi apela la \textit{www.kaggle.com}, un website ce conține datasets din diverse domenii. Aici am găsit liste uriașe
+cu nume și prenume uzuale în engleză. Astfel, pentru a alcătui numele și prenumele pentru o persoană, voi alege random 
+din aceste 2 liste. Emailul personal îl pot construi după formatul nume.prenume@email.com . Numărul de telefon 
+se generează ușor, atașând la prefixul 07 un număr de 8 cifre generat random.
+
+Pentru adrese, pe același site am găsit un set, la fel de mare, cu adrese de stradă din SUA. Tot pe site, am
+găsit și o colecție de orașe și țara căreia aparțin. Combinându-le, pot genera o intrare în tabelul \textit{Locatie}.
+
+Pentru produse, am găsit o bază de date cu produse de pe un site de e-commerce indian, unde se afla și 
+descrieri ale produselor. Pentru categorii, pot prelua un set de categorii de pe un magazin online existent, 
+cum ar fi \textit{www.emag.ro}. Pentru recenzii, am găsit pe \textit{kaggle} o colecție de recenzii lăsate pe \textit{Amazon}.
+
+Tot gândindu-mă cum sa generez niște date calendaristice random, am găsit un dataset cu răspunsuri lăsate pe
+\textit{stackoverflow}, unde era inclus și timestamp-ul la care au fost lăsate, și am decis să le iau de acolo.
+
+
+A fost o experiență bună să învăț să generez intrări random, pentru că acum pot cu ușurință sa modific cantitatea care
+va fi generată. Dacă voi avea nevoie să fac niște \textit{stress tests}, adică să văd cât de bine se descurcă
+baza mea de date din punct de vedere a eficieței timpului și spațiului, pot să o fac cu ușurință.
 
 \pagebreak
 
@@ -305,7 +336,7 @@ begin
     end loop;
     
     for i in Depozite.first .. Depozite.last loop
-        if Depozite(i) is not null then
+        if Depozite.exists(i) then
             dbms_output.put_line('Produs id: '|| i||' Depozit id: '||Depozite(i));
         end if;
     end loop;
@@ -388,7 +419,7 @@ end;
 
 -- Adaugam o categorie noua, astfel suntem siguri ca nu se regaseste
 -- in niciun depozit
-insert into categorie values((select max(categorie_id) from categorie) + 1, 'CategorieNula');
+insert into categorie(categorie_id, NumeCategorie) values((select max(categorie_id) from categorie) + 1, 'CategorieNula');
 begin
     dbms_output.put_line('Categorii care se regasesc in cel putin 1 depozit: '||IdentificareDepozite());
 end;
@@ -512,7 +543,8 @@ exception
 end;
 /
 
-execute VizualizareComenzi('Bucuresti', 1);
+-- trebuie pasat un oras care sa exista, sa consultam mai intai tabelul locatie
+execute VizualizareComenzi('Florida', 1);
 
 -- Dam un oras care nu exista
 execute VizualizareComenzi('ABCD', 1);
@@ -950,7 +982,7 @@ is
         end loop;
         
         for i in Depozite.first .. Depozite.last loop
-            if Depozite(i) is not null then
+            if Depozite.exists(i) then
                 dbms_output.put_line('Produs id: '||i||' Depozit id: '||Depozite(i));
             end if;
         end loop;
@@ -1064,7 +1096,74 @@ Alături de acest pdf, se vor mai găsi și fișierele aferente bazei de date:
   \item \textit{populateDatabase.sql} - script-ul de populare a bazei de date cu niște date exemplu, pentru
         a putea testa subprogramele create
   \item \textit{Cerintai.sql} - fișierul ce conține implementarea cerinței $i$
+  \item \textit{PopulateDatabase.py} - un script \textit{Python} folosit pentru adăugarea inserărilor random
+        în baza de date.
+  \item \textit{PopulateDatabase.sql} - script-ul \textit{SQL} produs de cel de mai sus ce conține insert-urile propriu-zise
 \end{itemize}
+
+\pagebreak
+
+\section{Screenshots}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Creare.jpg}
+\caption{Crearea bazei de date}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Populare.png}
+\caption{Popularea bazei de date}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta6.png}
+\caption{Execuția cerinței 6}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta7.png}
+\caption{Execuția cerinței 7}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta8.png}
+\caption{Execuția cerinței 8}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta9.png}
+\caption{Execuția cerinței 9}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta10.png}
+\caption{Execuția cerinței 10}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta11.png}
+\caption{Execuția cerinței 11}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta12.png}
+\caption{Execuția cerinței 12}
+\end{figure}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=1\linewidth]{Cerinta13-14.png}
+\caption{Execuția cerințelor 13-14}
+\end{figure}
 
 \bibliographystyle{abbrv}
 \bibliography{main}

@@ -63,7 +63,7 @@ end;
 
 -- Adaugam o categorie noua, astfel suntem siguri ca nu se regaseste
 -- in niciun depozit
-insert into categorie values((select max(categorie_id) from categorie) + 1, 'CategorieNula');
+insert into categorie(categorie_id, NumeCategorie) values((select max(categorie_id) from categorie) + 1, 'CategorieNula');
 begin
     dbms_output.put_line('Categorii care se regasesc in cel putin 1 depozit: '||IdentificareDepozite());
 end;

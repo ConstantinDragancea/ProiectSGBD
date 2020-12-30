@@ -107,7 +107,8 @@ exception
 end;
 /
 
-execute VizualizareComenzi('Bucuresti', 1);
+-- trebuie pasat un oras care sa exista, sa consultam mai intai tabelul locatie
+execute VizualizareComenzi('Florida', 1);
 
 -- Dam un oras care nu exista
 execute VizualizareComenzi('ABCD', 1);
