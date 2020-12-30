@@ -25,7 +25,6 @@ begin
     ) loop
         NumeCategorii(categ.categorie_id) := categ.NumeCategorie;
         begin
-            dbms_output.put_line('inainte de select');
             select depozit_id into dep_id
             from (
                 select dp.depozit_id, sum(dp.cantitate) as numar_produse
@@ -36,13 +35,11 @@ begin
                 order by numar_produse desc                    
             )
             where rownum <= 1;
-            dbms_output.put_line('dupa de select');
             Categorii(categ.categorie_id) := dep_id;
         exception
             -- nu putem avea exceptia too many rows deoarece am un
             -- where rownum <= 1, deci putem avea maxim 1 rezultat
             when no_data_found then
-                dbms_output.put_line('No data found bish nigga cunt');
                 Categorii(categ.categorie_id) := null;
         end;
     end loop;

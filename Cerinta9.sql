@@ -10,7 +10,7 @@ set serveroutput on;
 -- Functia va returna numarul de Categorii care se regasesc in macar un depozit
 create or replace procedure VizualizareComenzi(
     nume_oras    locatie.oras%type,
-    k       integer
+    k            integer
 )
 is
     type tip_raspuns is record (utilizator_id   utilizator.utilizator_id%type,

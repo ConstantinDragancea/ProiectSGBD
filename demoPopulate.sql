@@ -22,11 +22,11 @@ insert into utilizator values(3, 'Dorel', 'Dori', 'Partener', 'dorel.dori@email.
 insert into utilizator values(4, 'Teo', 'Costel', 'Utilizator', 'teo.costel@email.com', '0737204222', sysdate, 4);
 insert into utilizator values(5, 'Ana', 'Maria', 'Utilizator', 'ana.maria@email.com', '0737202202', sysdate, 2);
 
-insert into categorie values(1, 'Tech');
-insert into categorie values(2, 'Religie');
-insert into categorie values(3, 'Pijama');
-insert into categorie values(4, 'Incaltaminte');
-insert into categorie values(5, 'Utilitare');
+insert into categorie values(1, 'Tech', null, null);
+insert into categorie values(2, 'Religie', null, null);
+insert into categorie values(3, 'Pijama', null, null);
+insert into categorie values(4, 'Incaltaminte', null, null);
+insert into categorie values(5, 'Utilitare', null, null);
 
 insert into produs values(1, 3, 1, 'Iphone 12 Pro 64GB', 'Cel mai cel mai', 1099.99, 5);
 insert into produs values(2, 1, 2, 'Biblia', 'Efectiv cartea cartilor', 333, 3);
