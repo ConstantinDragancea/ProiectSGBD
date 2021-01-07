@@ -108,7 +108,7 @@ end;
 /
 
 -- trebuie pasat un oras care sa exista, sa consultam mai intai tabelul locatie
-execute VizualizareComenzi('Florida', 1);
+execute VizualizareComenzi('Tochigi', 100);
 
 -- Dam un oras care nu exista
 execute VizualizareComenzi('ABCD', 1);
