@@ -1,4 +1,4 @@
--- Cerinte 13, 14
+-- Cerinte 13
 
 set serveroutput on;
 
